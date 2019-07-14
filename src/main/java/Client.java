@@ -1,4 +1,4 @@
-import com.jcraft.jsch
+import com.jcraft.jsch.*;
 
 public class Client {
     public void run(){
