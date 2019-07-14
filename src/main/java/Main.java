@@ -1,4 +1,5 @@
-package com.company;
+import com.jcraft.jsch.*;
+
 
 public class Main {
 
