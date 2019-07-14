@@ -28,4 +28,6 @@ _Team 6_
 
 Jeffrey De La Mare
 
+Gurvir Sandhar
+
 TODO Put your name here
