@@ -4,9 +4,9 @@ import java.io.*;
  *  Contains Username, Password, and other relevant information
  */
 public class User {
-    private String username;
-    private String password;
-    private String hostname;
+    String username;
+    String password;
+    String hostname;
 
     User(){
         /** Base instantiation of User object.
