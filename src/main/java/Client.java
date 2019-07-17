@@ -96,7 +96,7 @@ public class Client {
         System.out.println("What is the destination path for the file you're uploading?");
         dst = sc.nextLine();
 
-        try{//get from server
+        try{//put onto server
 
             channelSftp.put(src,dst);
         }
