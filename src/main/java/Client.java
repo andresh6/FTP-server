@@ -1,4 +1,6 @@
 import com.jcraft.jsch.*;
+import java.util.Properties;
+import java.util.Scanner;
 
 public class Client {
     JSch jsch;
@@ -48,4 +50,62 @@ public class Client {
             System.exit(1);
         }
     }
+
+    /**
+     * Downloads file from server, to local machine.
+     * asks for source path of file to download and
+     * destination path for file
+     */
+    public void get_file(){
+
+        String src; //source path for file (home/agileteam6/<file>
+        String dst; //destination path for file downloaded
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("What is the source path for the file you'd like to download?");
+        src = sc.nextLine();
+
+        System.out.println("What is the destination path for the file you're downloading?");
+        dst = sc.nextLine();
+
+        try{//get from server
+
+           channelSftp.get(src,dst);
+        }
+        catch (SftpException e){
+            System.err.println("Something went wrong while getting your file.");
+            System.err.println(e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * uploads file to server from local machine
+     */
+    public void put_file(){
+
+        String src; //source path for file (home/agileteam6/<file>
+        String dst; //destination path for file downloaded
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("What is the source path for the file you'd like to upload?");
+        src = sc.nextLine();
+
+        System.out.println("What is the destination path for the file you're uploading?");
+        dst = sc.nextLine();
+
+        try{//get from server
+
+            channelSftp.put(src,dst);
+        }
+        catch (SftpException e){
+            System.err.println("Something went wrong while uploading your file.");
+            System.err.println(e);
+            System.exit(1);
+        }
+    }
+
+
 }
