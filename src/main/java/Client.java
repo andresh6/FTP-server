@@ -36,6 +36,10 @@ public class Client {
             // make user object for username and password
             session.setPassword(user.password);
 
+            Properties config = new java.util.Properties();     //skips host key checking
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
+
             session.connect();
 
             Channel channel = session.openChannel("sftp");
