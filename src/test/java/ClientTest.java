@@ -1,22 +1,53 @@
 import com.jcraft.jsch.JSch;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 public class ClientTest {
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
+
     private User user = new User("agileteam6", "agileteam6", "34.83.11.14");
     private Client client = new Client(user);
 
     @Test
-    public void connect() {
+    public void testClientConnect1() {
        client.connect();
        assertTrue(client.channelSftp.isConnected());
     }
 
     @Test
-    public void listLocalFiles() {
+    public void testlistLocalFiles1() {
     }
 
     @Test
-    public void listRemoteFiles() {
+    public void testListRemoteFiles1() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            client.connect();
+        }
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), containsString("text.txt"));
+        System.setOut(originalOut);
     }
+
+    @Test
+    public void testListRemoteDirectory1() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            client.connect();
+        }
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), containsString("NewFolder"));
+        System.setOut(originalOut);
+    }
+
 }
