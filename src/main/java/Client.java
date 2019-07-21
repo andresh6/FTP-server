@@ -22,6 +22,7 @@ public class Client {
 
     /**
      * @param user
+     *        The <code>User</code> class object containing Username, Password and Hostname
      */
     Client(User user) {
         jsch = new JSch();
