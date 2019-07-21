@@ -1,10 +1,15 @@
 import com.jcraft.jsch.*;
 
+import java.nio.charset.Charset;
+
 public class Client {
     JSch jsch;
     ChannelSftp channelSftp; // the connection for the client
     User user; // expand to data structure
 
+    /**
+     *
+     */
     Client() {
         // create jsch
         jsch = new JSch();
@@ -15,6 +20,9 @@ public class Client {
         // instantiate the session
     }
 
+    /**
+     * @param user
+     */
     Client(User user) {
         jsch = new JSch();
         this.user = user;
@@ -33,6 +41,9 @@ public class Client {
 
             // make user object for username and password
             session.setPassword(user.password);
+            java.util.Properties config = new java.util.Properties();
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
 
             session.connect();
 
@@ -46,6 +57,26 @@ public class Client {
             System.err.println("You did something wrong.");
             System.err.println(e);
             System.exit(1);
+        }
+    }
+
+    public void listLocalFiles() {
+
+    }
+
+    public void listRemoteFiles() {
+        try {
+            java.util.Vector path = channelSftp.ls(Character.toString('.'));
+            if(path != null) {
+                for(int i = 0; i < path.size(); i++){
+                    Object obj = path.elementAt(i);
+                    if (obj instanceof com.jcraft.jsch.ChannelSftp.LsEntry){
+                        System.out.println(((com.jcraft.jsch.ChannelSftp.LsEntry)obj).getLongname());
+                    }
+                }
+            }
+        } catch (SftpException e) {
+            System.err.println(e);
         }
     }
 }
