@@ -2,6 +2,10 @@ import com.jcraft.jsch.*;
 
 import java.nio.charset.Charset;
 
+/**
+ * Client class allows connections to server, lists files
+ * on both local and remote servers.
+ */
 public class Client {
     JSch jsch;
     ChannelSftp channelSftp; // the connection for the client
