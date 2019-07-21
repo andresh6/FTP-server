@@ -10,6 +10,7 @@ public class Client {
     JSch jsch;
     ChannelSftp channelSftp; // the connection for the client
     User user; // expand to data structure
+    Session session; //Session covers all of Client
 
     /**
      *
@@ -42,7 +43,7 @@ public class Client {
     public void connect(){
         try {
             // function that runs the code...
-            Session session = jsch.getSession(user.username, user.hostname, 22);
+            session = jsch.getSession(user.username, user.hostname, 22);
 
             // make user object for username and password
             session.setPassword(user.password);
@@ -83,5 +84,14 @@ public class Client {
         } catch (SftpException e) {
             System.err.println(e);
         }
+    }
+
+    /**
+     *
+     */
+    public void logOff() {
+        System.out.println("Logging off...");
+        channelSftp.exit();
+        session.disconnect();
     }
 }

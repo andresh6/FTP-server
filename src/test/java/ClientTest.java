@@ -31,7 +31,7 @@ public class ClientTest {
         System.setOut(new PrintStream(outContent));
         client.connect();
         if(!client.channelSftp.isConnected()){
-            client.connect();
+            fail("Could not connect to server");
         }
         client.listRemoteFiles();
         assertThat(outContent.toString(), containsString("text.txt"));
@@ -43,11 +43,23 @@ public class ClientTest {
         System.setOut(new PrintStream(outContent));
         client.connect();
         if(!client.channelSftp.isConnected()){
-            client.connect();
+            fail("Could not connect to server");
         }
         client.listRemoteFiles();
         assertThat(outContent.toString(), containsString("NewFolder"));
         System.setOut(originalOut);
     }
 
+    @Test
+    public void testLogOff() {
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        assertTrue(client.channelSftp.isConnected());
+        assertTrue(client.session.isConnected());
+        client.logOff();
+        assertFalse(client.channelSftp.isConnected());
+        assertFalse(client.session.isConnected());
+    }
 }
