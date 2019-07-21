@@ -66,6 +66,12 @@ public class Client {
         }
     }
 
+    public void logOff() {
+        System.out.println("Logging off...");
+        channelSftp.exit();
+        session.disconnect();
+    }
+
     public void listLocalFiles() {
 
     }
@@ -86,12 +92,18 @@ public class Client {
         }
     }
 
-    /**
-     *
-     */
-    public void logOff() {
-        System.out.println("Logging off...");
-        channelSftp.exit();
-        session.disconnect();
-    }
+
+     public void createRemoteDirectory(String path){
+        try {
+            if (path!=null){
+                channelSftp.mkdir(path);
+            }
+
+
+        } catch (SftpException e) {
+            e.printStackTrace();
+        }
+     }
+
+
 }

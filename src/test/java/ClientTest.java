@@ -62,4 +62,18 @@ public class ClientTest {
         assertFalse(client.channelSftp.isConnected());
         assertFalse(client.session.isConnected());
     }
+
+    @Test
+    public void testCreateRemoteDirectory() {
+         System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        String currentTime= String.valueOf(System.currentTimeMillis()/1000);
+        client.createRemoteDirectory(currentTime);
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), containsString(currentTime));
+        System.setOut(originalOut);
+    }
 }
