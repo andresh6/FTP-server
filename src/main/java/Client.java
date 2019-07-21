@@ -55,59 +55,39 @@ public class Client {
         }
     }
 
+
     /**
      * Downloads file from server, to local machine.
-     * asks for source path of file to download and
-     * destination path for file
+     * example: get src dst
+     * get /home/agileteam6/text.txt /home/user/Downloads/
      */
-    public void get_file(){
+    public void get_file(String src, String dst){
 
-        String src; //source path for file (home/agileteam6/<file>
-        String dst; //destination path for file downloaded
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("What is the source path for the file you'd like to download?");
-        src = sc.nextLine();
-
-        System.out.println("What is the destination path for the file you're downloading?");
-        dst = sc.nextLine();
-
-        try{//get from server
+        try{
 
            channelSftp.get(src,dst);
         }
         catch (SftpException e){
             System.err.println("Something went wrong while getting your file.");
             System.err.println(e);
-            System.exit(1);
         }
     }
 
+
     /**
      * uploads file to server from local machine
+     * example: put src dst
+     * put /home/user/Downloads/text.txt /home/agileteam6/
      */
-    public void put_file(){
+    public void put_file(String src, String dst){
 
-        String src; //source path for file (home/agileteam6/<file>
-        String dst; //destination path for file downloaded
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("What is the source path for the file you'd like to upload?");
-        src = sc.nextLine();
-
-        System.out.println("What is the destination path for the file you're uploading?");
-        dst = sc.nextLine();
-
-        try{//put onto server
+        try{
 
             channelSftp.put(src,dst);
         }
         catch (SftpException e){
             System.err.println("Something went wrong while uploading your file.");
             System.err.println(e);
-            System.exit(1);
         }
     }
 
