@@ -105,5 +105,15 @@ public class Client {
         }
      }
 
+     public void removeRemoteDirectory(String path){
+        try {
+            if(path!=null){
+                channelSftp.rmdir(path);
+            }
+        } catch (SftpException e) {
+            e.printStackTrace();
+        }
+     }
+
 
 }

@@ -2,14 +2,17 @@ import com.jcraft.jsch.JSch;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.*;
 
 public class ClientTest {
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private  ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private  ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
 
@@ -64,8 +67,8 @@ public class ClientTest {
     }
 
     @Test
-    public void testCreateRemoteDirectory() {
-         System.setOut(new PrintStream(outContent));
+    public void testCreateAndDeleteRemoteDirectory() {
+        System.setOut(new PrintStream(outContent));
         client.connect();
         if(!client.channelSftp.isConnected()){
             fail("Could not connect to server");
@@ -74,6 +77,25 @@ public class ClientTest {
         client.createRemoteDirectory(currentTime);
         client.listRemoteFiles();
         assertThat(outContent.toString(), containsString(currentTime));
+        outContent=new ByteArrayOutputStream();
+        //System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+        client.removeRemoteDirectory(currentTime);
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), not(containsString(currentTime)));
+        System.setOut(originalOut);
+
+    }
+
+    @Test
+    public void testRemoveRemoteDirectory() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        //client.removeRemoteDirectory(currentTime);
+        client.listRemoteFiles();
+        //assertThat(outContent.toString(), containsString(currentTime));
         System.setOut(originalOut);
     }
 }
