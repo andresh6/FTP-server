@@ -13,12 +13,13 @@ public class Client {
     Session session; //Session covers all of Client
 
     /**
-     *
+     * Base constructor
+     * TODO: Delete this? Add checking for valid User info before connect?
      */
     Client() {
         // create jsch
-        jsch = new JSch();
-        user = new User();
+        this.jsch = new JSch();
+        this.user = new User();
 
         // connect ?
         // pass in the user object
@@ -26,20 +27,34 @@ public class Client {
     }
 
     /**
+     * Constructor with <code>User</code> object
      * @param user
      *        The <code>User</code> class object containing Username, Password and Hostname
      */
     Client(User user) {
-        jsch = new JSch();
+        this.jsch = new JSch();
         this.user = user;
     }
 
+    /**
+     * Constructor that creates <code>User</code> object with passed arguments
+     * @param username
+     *        The <code>username</code> to be used in the <code>User</code> object
+     * @param password
+     *        The <code>password</code> to be used in the <code>User</code> object
+     * @param hostname
+     *        The <code>hostname</code> to be used in the <code>User</code> object
+     */
     Client(String username, String password, String hostname) {
-        jsch = new JSch();
-        user = new User(username, password, hostname);
+        this.jsch = new JSch();
+        this.user = new User(username, password, hostname);
     }
 
 
+    /**
+     * Opens the connection to the SFTP server using the information stored in the
+     * <code>User</code> object
+     */
     public void connect(){
         try {
             // function that runs the code...
@@ -66,16 +81,27 @@ public class Client {
         }
     }
 
+    /**
+     * Closes the connection to the SFTP server
+     */
     public void logOff() {
         System.out.println("Logging off...");
         channelSftp.exit();
         session.disconnect();
     }
 
+    /**
+     * Will print local files within the current directory
+     * Uses 'ls -la' functionality
+     */
     public void listLocalFiles() {
 
     }
 
+    /**
+     * Will print remote files in the current SFTP server side directory
+     * Uses 'ls -la' functionality
+     */
     public void listRemoteFiles() {
         try {
             java.util.Vector path = channelSftp.ls(Character.toString('.'));
@@ -93,6 +119,11 @@ public class Client {
     }
 
 
+    /**
+     * Creates a new directory on the remote SFTP server
+     * @param path
+     *        The path, including filename of the new directory & directory location
+     */
      public void createRemoteDirectory(String path){
         try {
             if (path!=null){
@@ -105,12 +136,19 @@ public class Client {
         }
      }
 
+    /**
+     * Will delete a directory on the remote SFTP server
+     * @param path
+     *        The path for the directory to delete
+     * TODO: Add recursive argument/functionality
+     */
      public void removeRemoteDirectory(String path){
         try {
             if(path!=null){
                 channelSftp.rmdir(path);
             }
         } catch (SftpException e) {
+            System.err.println(e);
             e.printStackTrace();
         }
      }

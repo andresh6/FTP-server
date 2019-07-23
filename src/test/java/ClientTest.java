@@ -19,6 +19,9 @@ public class ClientTest {
     private User user = new User("agileteam6", "agileteam6", "34.83.11.14");
     private Client client = new Client(user);
 
+    /**
+     * Simplest test, validates that a connection can be established to an SFTP server
+     */
     @Test
     public void testClientConnect1() {
        client.connect();
@@ -29,6 +32,10 @@ public class ClientTest {
     public void testlistLocalFiles1() {
     }
 
+    /**
+     * Test that validates that the remote ls command will work with a remote file.
+     * Expects a document <i>text.txt</i> on the server.
+     */
     @Test
     public void testListRemoteFiles1() {
         System.setOut(new PrintStream(outContent));
@@ -41,6 +48,10 @@ public class ClientTest {
         System.setOut(originalOut);
     }
 
+    /**
+     * Test that validates that the remote ls command will work with a remote directory.
+     * Expects a directory <i>NewFolder</i> on the server.
+     */
     @Test
     public void testListRemoteDirectory1() {
         System.setOut(new PrintStream(outContent));
@@ -53,8 +64,11 @@ public class ClientTest {
         System.setOut(originalOut);
     }
 
+    /**
+     * Test to validate closing the SFTP connection to the server
+     */
     @Test
-    public void testLogOff() {
+    public void testLogOff1() {
         client.connect();
         if(!client.channelSftp.isConnected()){
             fail("Could not connect to server");
@@ -66,6 +80,10 @@ public class ClientTest {
         assertFalse(client.session.isConnected());
     }
 
+    /**
+     * Test to delete a directory on the remote SFTP server.
+     * Will create and then delete a folder using the current unix timestamp
+     */
     @Test
     public void testCreateAndDeleteRemoteDirectory() {
         System.setOut(new PrintStream(outContent));
@@ -86,6 +104,11 @@ public class ClientTest {
 
     }
 
+    /**
+     * TODO: Write recursive functionality for directory deletion in <code>Client</code> class
+     * Test to create a directory with multiple sub-directories and documents, then delete them
+     *  all with a recursive deletion of the parent directory.
+     */
     @Test
     public void testRemoveRemoteDirectory() {
         System.setOut(new PrintStream(outContent));
@@ -93,9 +116,9 @@ public class ClientTest {
         if(!client.channelSftp.isConnected()){
             fail("Could not connect to server");
         }
-        //client.removeRemoteDirectory(currentTime);
+        client.removeRemoteDirectory("currentTime");
         client.listRemoteFiles();
-        //assertThat(outContent.toString(), containsString(currentTime));
+        assertThat(outContent.toString(), not(containsString("currentTime")));
         System.setOut(originalOut);
     }
 }
