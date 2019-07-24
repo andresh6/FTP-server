@@ -2,16 +2,20 @@ import com.jcraft.jsch.*;
 import java.util.Properties;
 import java.util.Scanner;
 
+/**
+ * TODO client class description goes here
+ */
 public class Client {
     JSch jsch;
     ChannelSftp channelSftp; // the connection for the client
     User user; // expand to data structure
+    private String currentWorkingDirectory;
 
     Client() {
         // create jsch
         jsch = new JSch();
         user = new User();
-
+        currentWorkingDirectory = System.getProperty("user.dir");
         // connect ?
         // pass in the user object
         // instantiate the session
@@ -61,7 +65,7 @@ public class Client {
      * example: get src dst
      * get /home/agileteam6/text.txt /home/user/Downloads/
      */
-    public void get_file(String src, String dst){
+    public void getFile(String src, String dst){
 
         try{
 
@@ -79,7 +83,7 @@ public class Client {
      * example: put src dst
      * put /home/user/Downloads/text.txt /home/agileteam6/
      */
-    public void put_file(String src, String dst){
+    public void putFile(String src, String dst){
 
         try{
 
@@ -91,5 +95,8 @@ public class Client {
         }
     }
 
+    public String getCurrentWorkingDirectory() {
+        return this.currentWorkingDirectory;
+    }
 
 }
