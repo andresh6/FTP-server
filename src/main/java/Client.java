@@ -68,10 +68,6 @@ public class Client {
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
 
-            Properties config = new java.util.Properties();     //skips host key checking
-            config.put("StrictHostKeyChecking", "no");
-            session.setConfig(config);
-
             session.connect();
 
             Channel channel = session.openChannel("sftp");
