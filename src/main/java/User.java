@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 
 /** User class for storing user data.
  *  Contains Username, Password, and other relevant information
@@ -34,6 +35,5 @@ public class User {
         this.password = password;
         this.hostname = hostname;
     }
-
 
 }

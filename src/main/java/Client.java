@@ -1,4 +1,6 @@
 import com.jcraft.jsch.*;
+import java.util.Properties;
+import java.util.Scanner;
 
 import java.nio.charset.Charset;
 
@@ -66,6 +68,10 @@ public class Client {
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
 
+            Properties config = new java.util.Properties();     //skips host key checking
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
+
             session.connect();
 
             Channel channel = session.openChannel("sftp");
@@ -90,6 +96,35 @@ public class Client {
         session.disconnect();
     }
 
+    /**
+     * Downloads file from server, to local machine.
+     * example: get src dst
+     * get /home/agileteam6/text.txt /home/user/Downloads/
+     */
+    public void get_file(String src, String dst){
+        try{
+           channelSftp.get(src,dst);
+        }
+        catch (SftpException e){
+            System.err.println("Something went wrong while getting your file.");
+        }
+    }
+ 
+    /**
+     * uploads file to server from local machine
+     * example: put src dst
+     * put /home/user/Downloads/text.txt /home/agileteam6/
+     */
+    public void put_file(String src, String dst){
+        try{
+            channelSftp.put(src,dst);
+        }
+        catch (SftpException e){
+            System.err.println("Something went wrong while uploading your file.");
+            System.err.println(e);
+        }
+    }
+   
     /**
      * Will print local files within the current directory
      * Uses 'ls -la' functionality
@@ -117,8 +152,7 @@ public class Client {
             System.err.println(e);
         }
     }
-
-
+    
     /**
      * Creates a new directory on the remote SFTP server
      * @param path
@@ -129,8 +163,6 @@ public class Client {
             if (path!=null){
                 channelSftp.mkdir(path);
             }
-
-
         } catch (SftpException e) {
             e.printStackTrace();
         }
@@ -152,6 +184,5 @@ public class Client {
             e.printStackTrace();
         }
      }
-
 
 }
