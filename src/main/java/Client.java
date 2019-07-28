@@ -3,6 +3,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import java.nio.charset.Charset;
+import java.util.Vector;
 
 /**
  * Client class allows connections to server, lists files
@@ -165,10 +166,9 @@ public class Client {
      }
 
     /**
-     * Will delete a directory on the remote SFTP server
+     * Will delete a directory on the remote SFTP server - nonRecursive
      * @param path
      *        The path for the directory to delete
-     * TODO: Add recursive argument/functionality
      */
      public void removeRemoteDirectory(String path){
         try {
@@ -180,5 +180,47 @@ public class Client {
             e.printStackTrace();
         }
      }
+
+
+    /**
+     * Will recursively delete files in directory and then delete directory on remote server
+     * @param path
+     * @throws SftpException
+     */
+    public void recursiveRemoveRemoteDir(String path)  {
+        try {
+            //channelSftp.cd(path);//change directory on SFTP server
+
+            //list source directory structure
+            Vector<ChannelSftp.LsEntry> fileAndFolderList = channelSftp.ls(path);
+
+            //iterate objects in the list to get file/folder names.
+            for (ChannelSftp.LsEntry item : fileAndFolderList) {
+                //if it is a file (not a directory)
+                if (!item.getAttrs().isDir()) {
+                    channelSftp.rm(path + "/" + item.getFilename()); //remove file
+                } else if (!(".".equals(item.getFilename()) || "..".equals(item.getFilename()))) { //if it is a subdirectory
+                    try {
+                        //removing sub directory
+                        channelSftp.rmdir(path + "/" + item.getFilename());
+                    } catch (Exception e) { //if subdir is not empty and error occurs.
+                        //do recursiveRemoveRemoteDir on this subdir
+                        recursiveRemoveRemoteDir(path + "/" + item.getFilename());
+                    }
+                }
+            }
+        }catch (SftpException e) {
+            e.printStackTrace();
+        }
+        //delete the parent directory
+        try {
+            if(path!=null){
+                channelSftp.rmdir(path);
+            }
+        } catch (SftpException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
 
 }
