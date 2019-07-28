@@ -1,10 +1,27 @@
-import com.jcraft.jsch.JSch;
+import org.apache.sshd.common.NamedFactory;
+import org.apache.sshd.server.Command;
+import org.apache.sshd.server.CommandFactory;
+import org.apache.sshd.server.SshServer;
+import org.apache.sshd.server.auth.UserAuth;
+import org.apache.sshd.server.auth.password.PasswordAuthenticator;
+import org.apache.sshd.server.auth.password.PasswordChangeRequiredException;
+import org.apache.sshd.server.auth.password.UserAuthPasswordFactory;
+import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
+import org.apache.sshd.server.scp.ScpCommandFactory;
+import org.apache.sshd.server.session.ServerSession;
+import org.apache.sshd.server.shell.ProcessShellFactory;
+import org.apache.sshd.server.subsystem.sftp.SftpSubsystemFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import javax.management.monitor.Monitor;
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsNot.not;
@@ -16,8 +33,51 @@ public class ClientTest {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
 
-    private User user = new User("agileteam6", "agileteam6", "34.83.11.14");
+    //private User user = new User("agileteam6", "agileteam6", "34.83.11.14");
+    private User user = new User("user", "password", "localhost");
     private Client client = new Client(user);
+    private SshServer sshd;
+
+    @Before
+    public void setupServer() {
+        try {
+            //List<NamedFactory<UserAuth>> userAuthFactories = new ArrayList<NamedFactory<UserAuth>>();
+            //userAuthFactories.add(new UserAuthPasswordFactory());
+
+            //List<NamedFactory<Command>> namedFactoryList = new ArrayList<NamedFactory<Command>>();
+            //namedFactoryList.add(new SftpSubsystemFactory());
+
+            sshd = SshServer.setUpDefaultServer();
+            sshd.setPort(22);
+            sshd.setHost("localhost");
+            sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
+            sshd.setShellFactory(new ProcessShellFactory(new String[] { "/bin/sh", "-i", "-l" }));
+            sshd.setCommandFactory(new ScpCommandFactory());
+
+
+//            sshd.setUserAuthFactories(userAuthFactories);
+//            sshd.setCommandFactory(new ScpCommandFactory());
+//            sshd.setSubsystemFactories(namedFactoryList);
+            sshd.setPasswordAuthenticator(new PasswordAuthenticator() {
+                public boolean authenticate(String s, String s1, ServerSession serverSession) throws PasswordChangeRequiredException {
+                    return true;
+                }
+            });
+            sshd.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void shutdownServer(){
+        try {
+            sshd.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Simplest test, validates that a connection can be established to an SFTP server

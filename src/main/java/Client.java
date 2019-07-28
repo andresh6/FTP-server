@@ -65,6 +65,7 @@ public class Client {
             // make user object for username and password
             session.setPassword(user.password);
             java.util.Properties config = new java.util.Properties();
+            config.put("kex", "diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256");
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
 
