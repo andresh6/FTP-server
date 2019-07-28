@@ -189,7 +189,6 @@ public class Client {
      */
     public void recursiveRemoveRemoteDir(String path)  {
         try {
-            //channelSftp.cd(path);//change directory on SFTP server
 
             //list source directory structure
             Vector<ChannelSftp.LsEntry> fileAndFolderList = channelSftp.ls(path);
