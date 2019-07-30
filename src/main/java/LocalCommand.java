@@ -82,10 +82,19 @@ public class LocalCommand extends AbstractCommand {
         return this.currentDirectory;
     }
 
+    /**
+     * Run a shell command on local host.
+     */
     public void cmd() {
         // ? not sure what this does.
     }
 
+    /**
+     * Rename a file.
+     *
+     * @param oldName  old name of a file
+     * @param newName  new name of a file
+     */
     @Override
     public void mv(String oldName, String newName) {
         if(oldName == null || newName == null) {
