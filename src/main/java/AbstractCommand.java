@@ -4,15 +4,21 @@
 
 public abstract class AbstractCommand {
 
-    String currentWorkingDirectory;
+    protected final String currentWorkingDirectory;
+    protected String currentDirectory;
 
     public AbstractCommand() {
         this.currentWorkingDirectory = System.getProperty("user.dir");
+        this.currentDirectory = currentWorkingDirectory;
+    }
+
+    public String getcwd() {
+        return currentDirectory;
     }
 
     abstract void cd(String path);
     abstract void ls(String path);
     abstract void mkdir(String name);
-    abstract void pwd();
+    abstract String pwd();
     abstract void cmd();
 }

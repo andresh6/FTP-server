@@ -38,6 +38,7 @@ public class LocalCommand extends AbstractCommand {
      * Lists all of the files and directories at the level specified by the path parameter
      * @param path The full path that the user is currently on
      */
+    @Override
     public void ls(String path) {
         if(path != null) {
             try {
@@ -57,6 +58,7 @@ public class LocalCommand extends AbstractCommand {
      *
      * @param name    String name of a new directory.
      */
+    @Override
     public void mkdir(String name) {
         File dir = new File(this.currentWorkingDirectory + "/"+name);
         try {
@@ -70,10 +72,14 @@ public class LocalCommand extends AbstractCommand {
         }
     }
 
-    public void pwd() {
-        // uhm, we'd need something to track the current working directory throughout.
-        // which would actually benefit the previous commands.
-        // can't put it in the interface, needs to be a class member because it's non-static
+    /**
+     * Retrieve current directory;
+     * @return
+     */
+    @Override
+    public String pwd() {
+        System.out.println(this.currentDirectory);
+        return this.currentDirectory;
     }
 
     public void cmd() {

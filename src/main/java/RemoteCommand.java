@@ -1,4 +1,4 @@
-public class RemoteCommand implements Command {
+public class RemoteCommand extends AbstractCommand {
 
     public void cd(String path)
     {
