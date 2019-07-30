@@ -41,7 +41,7 @@ public class LocalCommand extends AbstractCommand {
     public void ls(String path) {
         if(path != null) {
             try {
-                File dir = new File(this.base_dir+"/"+path);
+                File dir = new File(this.currentWorkingDirectory+"/"+path);
                 for (String file : dir.list()) {
                     System.out.println(file);
                 }
@@ -58,7 +58,7 @@ public class LocalCommand extends AbstractCommand {
      * @param name    String name of a new directory.
      */
     public void mkdir(String name) {
-        File dir = new File(this.base_dir + "/"+name);
+        File dir = new File(this.currentWorkingDirectory + "/"+name);
         try {
             if (dir.mkdirs()) {
                 System.out.println("Directory was created successfully");
