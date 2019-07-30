@@ -85,4 +85,22 @@ public class LocalCommand extends AbstractCommand {
     public void cmd() {
         // ? not sure what this does.
     }
+
+    @Override
+    public void mv(String oldName, String newName) {
+        if(oldName == null || newName == null) {
+            System.out.println("Name is invalid");
+            return;
+        }
+
+        File ofile = new File(this.currentDirectory+"/"+oldName);
+        File nfile = new File(this.currentDirectory+"/"+newName);
+
+        if(ofile.renameTo(nfile)){
+            System.out.println("Successfully rename the file.");;
+        }else{
+            System.out.println("Failed to rename the file");
+        }
+
+    }
 }
