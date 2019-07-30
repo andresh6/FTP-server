@@ -1,13 +1,13 @@
 /**
  * command list
  */
-import java.
 
 public abstract class AbstractCommand {
-    String base_dir;
+
+    String currentWorkingDirectory;
 
     public AbstractCommand() {
-        this.base_dir = System.getProperty("user.dir");
+        this.currentWorkingDirectory = System.getProperty("user.dir");
     }
 
     abstract void cd(String path);
