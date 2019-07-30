@@ -3,6 +3,11 @@ import java.io.File;
 
 public class LocalCommand extends AbstractCommand {
 
+    public LocalCommand()
+    {
+
+    }
+
     public void cd(String path) // probably needs two parameters,
     {                           // one for the directory to move into, another for the path
                                 // should probably just return the path that the user is now on
@@ -36,7 +41,7 @@ public class LocalCommand extends AbstractCommand {
     public void ls(String path) {
         if(path != null) {
             try {
-                File dir = new File(path);
+                File dir = new File(this.base_dir+"/"+path);
                 for (String file : dir.list()) {
                     System.out.println(file);
                 }
@@ -47,10 +52,22 @@ public class LocalCommand extends AbstractCommand {
         }
     }
 
-
+    /**
+     * Create a direcroty. All intermediate directories that don't exist will be created.
+     *
+     * @param name    String name of a new directory.
+     */
     public void mkdir(String name) {
-        // needs to take another parameter, the path that the user is looking to mkdir in
-        // name of the directory
+        File dir = new File(this.base_dir + "/"+name);
+        try {
+            if (dir.mkdirs()) {
+                System.out.println("Directory was created successfully");
+            } else {
+                System.out.println("Failed trying to create the directory");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void pwd() {
