@@ -1,12 +1,32 @@
 import java.io.File;
 
 
-public class LocalCommand implements Command {
+public class LocalCommand extends AbstractCommand {
 
     public void cd(String path) // probably needs two parameters,
     {                           // one for the directory to move into, another for the path
                                 // should probably just return the path that the user is now on
 
+        if (path.equals(".")) {
+            return;
+        }
+        if (path.equals("..")) {
+
+        }
+        // check if path is `.`
+            // return
+
+        // check if path `..`
+            // reverse the string and dropWhile char != `/`
+
+        // check to see if the `path` is a directory
+        // if it is a file not directory
+            // bash: cd: temp.txt: Not a directory
+        // else if it is non existent
+            // bash: cd: foo: No such file or directory
+        // else
+            // confirm it has a leading forward slash
+            // append the path to the Client.currentWorkingDirectory attribute
     }
 
     /**

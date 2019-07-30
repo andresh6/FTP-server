@@ -9,13 +9,11 @@ public class Client {
     JSch jsch;
     ChannelSftp channelSftp; // the connection for the client
     User user; // expand to data structure
-    private String currentWorkingDirectory;
 
     Client() {
         // create jsch
         jsch = new JSch();
         user = new User();
-        currentWorkingDirectory = System.getProperty("user.dir");
         // connect ?
         // pass in the user object
         // instantiate the session
@@ -94,9 +92,4 @@ public class Client {
             System.err.println(e);
         }
     }
-
-    public String getCurrentWorkingDirectory() {
-        return this.currentWorkingDirectory;
-    }
-
 }
