@@ -1,7 +1,6 @@
 import com.jcraft.jsch.*;
 import java.util.Properties;
 import java.util.Scanner;
-
 import java.nio.charset.Charset;
 
 /**
@@ -120,6 +119,8 @@ public class Client {
             System.err.println(e);
         }
     }
+
+
    
     /**
      * Will print local files within the current directory
