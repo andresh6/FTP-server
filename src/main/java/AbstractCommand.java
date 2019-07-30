@@ -20,8 +20,6 @@ public abstract class AbstractCommand {
     abstract void ls(String path);
     abstract void mkdir(String name);
     abstract String pwd();
-    abstract void mv(String oldName, String newName) {
-
-    }
+    abstract void mv(String oldName, String newName);
     abstract void cmd();
 }

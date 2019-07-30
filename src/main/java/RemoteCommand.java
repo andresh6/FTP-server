@@ -13,11 +13,16 @@ public class RemoteCommand extends AbstractCommand {
 
     }
 
-    public void pwd() {
+    public String pwd() {
 
+        return new String();
     }
 
     public void cmd() {
+
+    }
+
+    public void mv(String oldName, String newName) {
 
     }
 }
