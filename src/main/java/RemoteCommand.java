@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 public class RemoteCommand extends AbstractCommand {
+=======
+public class RemoteCommand { //implements Command {
+>>>>>>> Stashed changes
 
     public void cd(String path)
     {
