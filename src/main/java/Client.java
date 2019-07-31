@@ -1,7 +1,6 @@
 import com.jcraft.jsch.*;
 import java.util.Properties;
 import java.util.Scanner;
-
 import java.nio.charset.Charset;
 import java.util.Vector;
 
@@ -121,6 +120,8 @@ public class Client {
             System.err.println(e);
         }
     }
+
+
    
     /**
      * Will print local files within the current directory
@@ -180,7 +181,6 @@ public class Client {
             e.printStackTrace();
         }
      }
-
 
     /**
      * Will recursively delete files in directory and then delete directory on remote server

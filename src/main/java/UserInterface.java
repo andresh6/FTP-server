@@ -15,7 +15,7 @@ public class UserInterface {
      * @param client
      * takes in a client object that is created in main when a user connects
      */
-    public void listen_for_input(Client client){
+    public void listenForInput(Client client){
 
         boolean loop_flag = true;
         while(loop_flag) {
@@ -25,10 +25,10 @@ public class UserInterface {
             input = sc.nextLine();
 
             if(input.startsWith("put ")){
-                put_file(client,input);
+                putFile(client,input);
             }
             else if(input.startsWith("get ")){
-                get_file(client,input);
+                getFile(client,input);
             }
             else if(input.equals("quit") || input.equals("exit")){
                 loop_flag = false;  //end loop
@@ -48,13 +48,13 @@ public class UserInterface {
      * @param input
      * User input that we will parse
      */
-    private void put_file(Client client, String input){
+    private void putFile(Client client, String input){
         String file_paths = input.substring(4);
         int index_of_space = file_paths.indexOf(" ");
         String src = file_paths.substring(0,index_of_space);
         String dst = file_paths.substring(index_of_space + 1);
 
-        client.put_file(src,dst);
+        client.putFile(src,dst);
     }
 
 
@@ -65,13 +65,13 @@ public class UserInterface {
      * @param input
      * User input that we will parse
      */
-    private void get_file(Client client, String input){
+    private void getFile(Client client, String input){
         String file_paths = input.substring(4);
         int index_of_space = file_paths.indexOf(" ");
         String src = file_paths.substring(0,index_of_space);
         String dst = file_paths.substring(index_of_space + 1);
 
-        client.get_file(src,dst);
+        client.getFile(src,dst);
     }
 }
 

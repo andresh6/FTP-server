@@ -1,5 +1,3 @@
-import com.jcraft.jsch.*;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -9,6 +7,6 @@ public class Main {
         Client client = new Client("agileteam6","agileteam6","34.83.11.14");
         client.connect();
         UserInterface ui = new UserInterface();
-        ui.listen_for_input(client);
+        ui.listenForInput(client);
     }
 }
