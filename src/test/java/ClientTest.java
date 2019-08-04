@@ -1,11 +1,9 @@
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsNot.not;
@@ -147,7 +145,7 @@ public class ClientTest {
      * string for filetoDelete must be updated with each test
      */
     @Test
-    public void deleteRemoteFiles() {
+    public void testDeleteRemoteFiles() {
         System.setOut(new PrintStream(outContent));
         client.connect();
         if(!client.channelSftp.isConnected()){
@@ -157,5 +155,15 @@ public class ClientTest {
         client.listRemoteFiles();
         assertThat(outContent.toString(), not(containsString("test3.txt")));
         System.setOut(originalOut);
+    }
+
+    @Test
+    public void testCopyRemoteDirectory() throws IOException, JSchException {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        client.copyRemoteDirectory("currentTime/*", "copiedDir/");
     }
 }
