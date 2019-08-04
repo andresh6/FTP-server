@@ -1,11 +1,9 @@
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsNot.not;
@@ -157,5 +155,26 @@ public class ClientTest {
         client.listRemoteFiles();
         assertThat(outContent.toString(), not(containsString("test3.txt")));
         System.setOut(originalOut);
+    }
+
+    @Test
+    public void testChangePermissions() {
+        client.connect();
+        try {
+            String permissionsFile = "permissionsTest.txt";
+            File file = new File(permissionsFile);
+            client.channelSftp.put(new FileInputStream(file),permissionsFile);
+            SftpATTRS attrs = client.channelSftp.lstat(permissionsFile);
+
+            String permissionsBefore = attrs.getPermissionsString();
+            System.out.println(permissionsBefore);
+            client.changePermissions(permissionsFile, "777");
+            String permissionsAfter = attrs.getPermissionsString();
+            System.out.println(permissionsAfter);
+
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
