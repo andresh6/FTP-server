@@ -97,7 +97,7 @@ public class Client {
      * example: get src dst
      * get /home/agileteam6/text.txt /home/user/Downloads/
      */
-    public void get_file(String src, String dst){
+    public void getFile(String src, String dst){
         try{
            channelSftp.get(src,dst);
         }
@@ -111,7 +111,7 @@ public class Client {
      * example: put src dst
      * put /home/user/Downloads/text.txt /home/agileteam6/
      */
-    public void put_file(String src, String dst){
+    public void putFile(String src, String dst){
         try{
             channelSftp.put(src,dst);
         }
@@ -150,6 +150,29 @@ public class Client {
             System.err.println(e);
         }
     }
+
+
+    /**
+     * delete the file that is passed in, return exception if file doesn't exist
+     */
+    public void deleteRemoteFiles(String fileToDelete) {
+        boolean deletedFlag = false;
+
+        try {
+            channelSftp.rm(fileToDelete); //this method removes the file from remote directory
+            deletedFlag = true;
+            if (deletedFlag) {
+                System.out.println("File deleted successfully.");
+            }
+            else
+
+                System.out.println("File does not exist.");
+            }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        }
+
     
     /**
      * Creates a new directory on the remote SFTP server
@@ -183,7 +206,7 @@ public class Client {
      }
 
     /**
-     * Will recursively delete files in directory and then delete directory on remote server
+     * recursively delete files in directory and then delete directory on remote server
      * @param path
      * @throws SftpException
      */
