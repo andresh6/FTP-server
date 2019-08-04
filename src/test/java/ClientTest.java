@@ -141,4 +141,21 @@ public class ClientTest {
         assertThat(outContent.toString(), not(containsString("NewFolder")));
         System.setOut(originalOut);
     }
+
+    /**
+     * Test to delete remote files, assumes you are in the correct directory,
+     * string for filetoDelete must be updated with each test
+     */
+    @Test
+    public void deleteRemoteFiles() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        client.deleteRemoteFiles("test3.txt");
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), not(containsString("test3.txt")));
+        System.setOut(originalOut);
+    }
 }
