@@ -3,9 +3,9 @@ import java.io.File;
 
 public class LocalCommand extends AbstractCommand {
 
-//    LocalCommand() {
-//        this.currentDirectory = System.getProperty("user.dir");
-//    }
+    LocalCommand() {
+        this.currentDirectory = System.getProperty("user.dir");
+    }
 
     public void cd(String path) {
         if (path.equals(".")) {
@@ -37,8 +37,10 @@ public class LocalCommand extends AbstractCommand {
                 StringBuilder sb = new StringBuilder(currentDirectory);
                 if (currentDirectory.charAt(currentDirectory.length() - 1) == '/') {
                     sb.append(path);
+                    currentDirectory = sb.toString();
                 } else {
-                    sb.append(path);
+                    sb.append("/" + path);
+                    currentDirectory = sb.toString();
                 }
             }
         } else if(!exists) {
