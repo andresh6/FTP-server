@@ -244,5 +244,13 @@ public class Client {
             e.printStackTrace();
         }
     }
-
+    
+    public void rename_file(String old_name, String new_name){
+        try{
+            channelSftp.rename(old_name, new_name);
+        } catch (SftpException e){
+            System.err.println("Something went wrong while renaming your file.");
+            System.err.println(e);
+        }
+    }
 }
