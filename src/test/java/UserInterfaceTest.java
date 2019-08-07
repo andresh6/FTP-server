@@ -28,7 +28,11 @@ public class UserInterfaceTest {
         if (!client.channelSftp.isConnected()) {
             fail("Could not connect to server");
         }
+<<<<<<< HEAD
         client.put_file("/home/andres/Desktop/TestFolder/testing.txt", "/home/agileteam6");
+=======
+        client.put_file("/home/andres/Desktop/TestFolder/testing.txt", "/home/agileteam6");//perfect
+>>>>>>> master
         client.listRemoteFiles();
         assertThat(outContent.toString(), containsString("testing.txt"));
         System.setOut(originalOut);
@@ -57,6 +61,7 @@ public class UserInterfaceTest {
             fail("Could not connect to server");
         }
     }
+<<<<<<< HEAD
     @Test
     public void testremovefile() {
         System.setOut(new PrintStream(outContent));
@@ -69,4 +74,6 @@ public class UserInterfaceTest {
         assertThat(outContent.toString(), containsString("testing1.txt"));
         System.setOut(originalOut);
     }
+=======
+>>>>>>> master
 }

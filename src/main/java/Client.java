@@ -244,7 +244,7 @@ public class Client {
             e.printStackTrace();
         }
     }
-    
+
     public void rename_file(String old_name, String new_name){
         try{
             channelSftp.rename(old_name, new_name);
@@ -253,4 +253,68 @@ public class Client {
             System.err.println(e);
         }
     }
+
+    /**
+     * Changes permissions of a file or directory on the remote server.
+     * @param path
+     *        The File/Directory of which to modify permissions.
+     * @param permissions
+     *        The new permissions, expects standard 3 digit octal 0-7 string.
+     */
+    public void changePermissions(String path, String permissions) {
+        boolean valid = true;
+        int foo = 0;
+        for(int i = 0; i < permissions.length(); i ++) {
+            char current = permissions.charAt(i);
+            if(current < '0' || current > '7') {
+                valid = false;
+                break;
+            }
+            foo <<= 3;
+            foo |= (current - '0');
+        }
+        if(valid) {
+            try {
+                channelSftp.chmod(foo, path);
+            } catch (SftpException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("Invalid permissions setting: " + permissions);
+            System.err.println("Expected format: a 3 digit octal number");
+        }
+    }
+
+    /**
+     * Changes group ID of a file or directory on the remote server.
+     * @param path
+     *        The File/Directory of which to modify permissions.
+     * @param group
+     *        The new Group ID to set
+     */
+    public void changeGroup(String path, String group) {
+        int toGroup = Integer.parseInt(group);
+        try {
+            channelSftp.chgrp(toGroup, path);
+        } catch (SftpException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Changes ownership ID of a file or directory on the remote server.
+     * @param path
+     *        The File/Directory of which to modify permissions.
+     * @param owner
+     *        The new Owner ID to set
+     */
+    public void changeOwner(String path, String owner) {
+        int toOwner = Integer.parseInt(owner);
+        try {
+            channelSftp.chgrp(toOwner, path);
+        } catch (SftpException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

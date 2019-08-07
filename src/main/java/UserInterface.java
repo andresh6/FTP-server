@@ -54,7 +54,7 @@ public class UserInterface {
         String src = file_paths.substring(0, index_of_space);
         String dst = file_paths.substring(index_of_space + 1);
 
-        client.put_file(src, dst);
+        client.putFile(src, dst);
     }
 
 
@@ -68,7 +68,7 @@ public class UserInterface {
         String src = file_paths.substring(0, index_of_space);
         String dst = file_paths.substring(index_of_space + 1);
 
-        client.get_file(src, dst);
+        client.getFile(src, dst);
     }
 
 
@@ -94,7 +94,7 @@ public class UserInterface {
 
             String file_name = mFiles.substring(0, index_of_space);
             String temp = src + "/" + file_name;
-            client.get_file(temp, dst);
+            client.getFile(temp, dst);
 
             mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
             index_of_space = mFiles.indexOf(" ");
@@ -102,7 +102,7 @@ public class UserInterface {
             if (index_of_space == -1) {   //handles last file in string
                 file_name = mFiles.substring(0, mFiles.length());
                 temp = src + "/" + file_name;
-                client.get_file(temp, dst);
+                client.getFile(temp, dst);
             }
         }
     }
@@ -129,7 +129,7 @@ public class UserInterface {
 
             String file_name = mFiles.substring(0, index_of_space);
             String temp = src + "/" + file_name;
-            client.put_file(temp, dst);
+            client.putFile(temp, dst);
 
             mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
             index_of_space = mFiles.indexOf(" ");
@@ -137,7 +137,7 @@ public class UserInterface {
             if (index_of_space == -1) {
                 file_name = mFiles.substring(0, mFiles.length());
                 temp = src + "/" + file_name;
-                client.put_file(temp, dst);
+                client.putFile(temp, dst);
             }
         }
     }
