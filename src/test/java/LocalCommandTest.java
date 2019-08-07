@@ -1,4 +1,5 @@
 //import jdk.vm.ci.meta.Local;
+/*
 import org.junit.Test;
 
 public class LocalCommandTest {
@@ -12,3 +13,4 @@ public class LocalCommandTest {
         // clean up temp dirs made
     }
 }
+*/
