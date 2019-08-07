@@ -161,18 +161,20 @@ public class ClientTest {
     public void testChangePermissions() {
         client.connect();
         try {
-            String permissionsFile = "permissionsTest.txt";
-            File file = new File(permissionsFile);
-            client.channelSftp.put(new FileInputStream(file),permissionsFile);
-            SftpATTRS attrs = client.channelSftp.lstat(permissionsFile);
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
 
+            SftpATTRS attrs = client.channelSftp.lstat(permissionsDir);
             String permissionsBefore = attrs.getPermissionsString();
-            System.out.println(permissionsBefore);
-            client.changePermissions(permissionsFile, "777");
-            String permissionsAfter = attrs.getPermissionsString();
-            System.out.println(permissionsAfter);
+            assertThat(permissionsBefore, containsString("drwxrwxr-x"));
 
-            file.delete();
+            client.changePermissions(permissionsDir, "770");
+
+            attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsAfter = attrs.getPermissionsString();
+            assertThat(permissionsAfter, containsString("drwxrwx---"));
+
+            client.removeRemoteDirectory(permissionsDir);
         } catch (Exception e) {
             e.printStackTrace();
         }

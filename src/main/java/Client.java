@@ -257,7 +257,7 @@ public class Client {
         int foo = 0;
         for(int i = 0; i < permissions.length(); i ++) {
             char current = permissions.charAt(i);
-            if(current < 0 || current > 7) {
+            if(current < '0' || current > '7') {
                 valid = false;
                 break;
             }
@@ -271,7 +271,7 @@ public class Client {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("Invalid permissions setting: " + permissions);
+            System.err.println("Invalid permissions setting: " + permissions + " " + foo);
         }
     }
 
