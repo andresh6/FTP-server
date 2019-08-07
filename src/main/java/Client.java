@@ -271,7 +271,8 @@ public class Client {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("Invalid permissions setting: " + permissions + " " + foo);
+            System.err.println("Invalid permissions setting: " + permissions);
+            System.err.println("Expected format: a 3 digit octal number");
         }
     }
 

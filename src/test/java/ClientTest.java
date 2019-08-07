@@ -179,4 +179,25 @@ public class ClientTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testChangePermissionsFailure() {
+        System.setErr(new PrintStream(errContent));
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            client.changePermissions(permissionsDir, "Words");
+
+            assertThat(errContent.toString(), containsString("Invalid permissions setting: "));
+
+            System.setErr(originalErr);
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
