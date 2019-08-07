@@ -1,11 +1,9 @@
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsNot.not;
@@ -157,5 +155,49 @@ public class ClientTest {
         client.listRemoteFiles();
         assertThat(outContent.toString(), not(containsString("test3.txt")));
         System.setOut(originalOut);
+    }
+
+    @Test
+    public void testChangePermissions() {
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            SftpATTRS attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsBefore = attrs.getPermissionsString();
+            assertThat(permissionsBefore, containsString("drwxrwxr-x"));
+
+            client.changePermissions(permissionsDir, "770");
+
+            attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsAfter = attrs.getPermissionsString();
+            assertThat(permissionsAfter, containsString("drwxrwx---"));
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testChangePermissionsFailure() {
+        System.setErr(new PrintStream(errContent));
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            client.changePermissions(permissionsDir, "Words");
+
+            assertThat(errContent.toString(), containsString("Invalid permissions setting: "));
+
+            System.setErr(originalErr);
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
