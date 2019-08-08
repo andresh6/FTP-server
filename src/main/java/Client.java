@@ -154,6 +154,8 @@ public class Client {
 
     /**
      * delete the file that is passed in, return exception if file doesn't exist
+     * @param fileToDelete name of file to be  deleted
+     * ex: rm "filename"
      */
     public void deleteRemoteFiles(String fileToDelete) {
         boolean deletedFlag = false;
@@ -178,6 +180,7 @@ public class Client {
      * Creates a new directory on the remote SFTP server
      * @param path
      *        The path, including filename of the new directory & directory location
+     * Ex: mkdir "directory name"
      */
      public void createRemoteDirectory(String path){
         try {
@@ -193,6 +196,7 @@ public class Client {
      * Will delete a directory on the remote SFTP server - nonRecursive
      * @param path
      *        The path for the directory to delete
+     * EX: rmdir "directory name"
      */
      public void removeRemoteDirectory(String path){
         try {
@@ -244,7 +248,6 @@ public class Client {
             e.printStackTrace();
         }
     }
-
     /**
      * Changes permissions of a file or directory on the remote server.
      * @param path
@@ -308,4 +311,49 @@ public class Client {
         }
     }
 
+    /**
+     * Changes the name of a file
+     * @param old_name name of file
+     * @param new_name name the file will be changed to
+     * ex:  mv "oldname" "newname"
+     */
+
+    public void rename_file(String old_name, String new_name){
+        try{
+            channelSftp.rename(old_name, new_name);
+        } catch (SftpException e){
+            System.err.println("Something went wrong while renaming your file.");
+            System.err.println(e);
+        }
+    }
+
+    /**
+     *
+     * @param dirName name of directory to be changed into
+     *  ex: cd "directory name"
+     */
+    public void changeDir(String dirName){
+        try{
+            String path = channelSftp.pwd();
+            channelSftp.cd(path + "/" + dirName);
+        } catch(SftpException e){
+            System.err.println("Something went wrong.");
+            System.err.println(e);
+        }
+    }
+
+    /**
+     * prints working directory
+     *
+     */
+    public void pwd(){
+
+        try{
+           System.out.println(channelSftp.pwd());
+        } catch(SftpException e){
+            System.err.println("Something went wrong.");
+            System.err.println(e);
+        }
+
+    }
 }
