@@ -248,6 +248,7 @@ public class Client {
             e.printStackTrace();
         }
     }
+
     /**
      * Changes permissions of a file or directory on the remote server.
      * @param path

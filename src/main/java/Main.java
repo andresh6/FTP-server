@@ -22,6 +22,7 @@ public class Main {
         Client client = new Client("agileteam6","agileteam6","34.83.11.14");
         client.connect();
         UserInterface ui = new UserInterface();
-        ui.listenForInput(client);
+        LocalCommand lc = new LocalCommand();
+        ui.listenForInput(client, lc);
     }
 }
