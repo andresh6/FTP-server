@@ -191,32 +191,7 @@ public class Client {
         }
      }
 
-    /**
-     * makes a remote copy of remote directory
-     * @throws JSchException
-     * @throws IOException
-     */
-     public void copyRemoteDirectory(String source, String target) throws IOException,  JSchException {
-         // generate a "mkdir" command for the target directory, if present
-         String mkdirCommandPrefix = "";
-         int separatorPos = target.lastIndexOf("/");
-        // if (separatorPos>=0){
-             //contains slash -> has directory part
-             String directoryPart = target.substring(0, separatorPos);
-             mkdirCommandPrefix = "mkdir -p " + directoryPart + " && ";
-        // }
 
-        ChannelExec channel = (ChannelExec) this.session.openChannel("exec");
-         //The provided paths are expected to require no escaping
-         String fullCommand = mkdirCommandPrefix + "cp -r" + source + " "+ target;
-         channel.setCommand(fullCommand);
-         channel.connect();
-         channel.disconnect();
-        // if (channel.getExitStatus()!=0){
-         //    throw new IOException("Remote copy operation failed");
-        // }
-
-     }
 
     /**
      * Will delete a directory on the remote SFTP server - nonRecursive
