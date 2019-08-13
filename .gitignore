@@ -26,5 +26,7 @@ hs_err_pid*
 .idea/
 .iml
 
+# target directory for compiled stuff
+target/
 #Mac
 .DS_Store
