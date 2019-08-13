@@ -157,13 +157,5 @@ public class ClientTest {
         System.setOut(originalOut);
     }
 
-    @Test
-    public void testCopyRemoteDirectory() throws IOException, JSchException {
-        System.setOut(new PrintStream(outContent));
-        client.connect();
-        if(!client.channelSftp.isConnected()){
-            fail("Could not connect to server");
-        }
-        client.copyRemoteDirectory("currentTime/*", "copiedDir/");
-    }
+
 }
