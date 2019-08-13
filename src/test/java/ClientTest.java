@@ -1,10 +1,9 @@
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.SftpATTRS;
+import com.jcraft.jsch.SftpException;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsNot.not;
@@ -96,8 +95,11 @@ public class ClientTest {
         client.listRemoteFiles();
         assertThat(outContent.toString(), containsString(currentTime));
         outContent=new ByteArrayOutputStream();
-        //System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-        client.removeRemoteDirectory(currentTime);
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+      //  client.removeRemoteDirectory(currentTime);
+
+        client.recursiveRemoveRemoteDir(currentTime);
+
         client.listRemoteFiles();
         assertThat(outContent.toString(), not(containsString(currentTime)));
         System.setOut(originalOut);
@@ -105,7 +107,6 @@ public class ClientTest {
     }
 
     /**
-     * TODO: Write recursive functionality for directory deletion in <code>Client</code> class
      * Test to create a directory with multiple sub-directories and documents, then delete them
      *  all with a recursive deletion of the parent directory.
      */
@@ -120,5 +121,83 @@ public class ClientTest {
         client.listRemoteFiles();
         assertThat(outContent.toString(), not(containsString("currentTime")));
         System.setOut(originalOut);
+    }
+
+    /**
+     * Test to delete a directory with multiple sub-directories or files recursively
+     */
+    @Test
+    public void testRecursiveRemoveRemoteDir() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+
+        client.recursiveRemoveRemoteDir("NewFolder");
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), not(containsString("NewFolder")));
+        System.setOut(originalOut);
+    }
+
+    /**
+     * Test to delete remote files, assumes you are in the correct directory,
+     * string for filetoDelete must be updated with each test
+     */
+    @Test
+    public void deleteRemoteFiles() {
+        System.setOut(new PrintStream(outContent));
+        client.connect();
+        if(!client.channelSftp.isConnected()){
+            fail("Could not connect to server");
+        }
+        client.deleteRemoteFiles("test3.txt");
+        client.listRemoteFiles();
+        assertThat(outContent.toString(), not(containsString("test3.txt")));
+        System.setOut(originalOut);
+    }
+
+    @Test
+    public void testChangePermissions() {
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            SftpATTRS attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsBefore = attrs.getPermissionsString();
+            assertThat(permissionsBefore, containsString("drwxrwxr-x"));
+
+            client.changePermissions(permissionsDir, "770");
+
+            attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsAfter = attrs.getPermissionsString();
+            assertThat(permissionsAfter, containsString("drwxrwx---"));
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testChangePermissionsFailure() {
+        System.setErr(new PrintStream(errContent));
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            client.changePermissions(permissionsDir, "Words");
+
+            assertThat(errContent.toString(), containsString("Invalid permissions setting: "));
+
+            System.setErr(originalErr);
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

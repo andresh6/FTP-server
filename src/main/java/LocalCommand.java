@@ -53,22 +53,23 @@ public class LocalCommand extends AbstractCommand {
 
     /**
      * Lists all of the files and directories at the level specified by the path parameter
-     * @param path The full path that the user is currently on
      */
     @Override
     public void ls(String path) {
         if(path != null) {
             try {
-                File dir = new File(this.currentDirectory+"/"+path);
+                File dir = new File(this.currentDirectory + "/" + path);
                 for (String file : dir.list()) {
                     System.out.println(file);
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
     }
+
+
+
 
     /**
      * Create a direcroty. All intermediate directories that don't exist will be created.

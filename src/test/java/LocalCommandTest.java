@@ -1,4 +1,5 @@
 //import jdk.vm.ci.meta.Local;
+/*
 import org.junit.Test;
 
 import java.io.File;
@@ -79,3 +80,4 @@ public class LocalCommandTest {
         return pathToFile;
     }
 }
+*/
