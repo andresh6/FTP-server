@@ -1,5 +1,6 @@
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import org.junit.Test;
 
@@ -157,5 +158,47 @@ public class ClientTest {
         System.setOut(originalOut);
     }
 
+    @Test
+    public void testChangePermissions() {
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
 
+            SftpATTRS attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsBefore = attrs.getPermissionsString();
+            assertThat(permissionsBefore, containsString("drwxrwxr-x"));
+
+            client.changePermissions(permissionsDir, "770");
+
+            attrs = client.channelSftp.lstat(permissionsDir);
+            String permissionsAfter = attrs.getPermissionsString();
+            assertThat(permissionsAfter, containsString("drwxrwx---"));
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testChangePermissionsFailure() {
+        System.setErr(new PrintStream(errContent));
+        client.connect();
+        try {
+            String permissionsDir = "permissionsDir";
+            client.createRemoteDirectory(permissionsDir);
+
+            client.changePermissions(permissionsDir, "Words");
+
+            assertThat(errContent.toString(), containsString("Invalid permissions setting: "));
+
+            System.setErr(originalErr);
+
+            client.removeRemoteDirectory(permissionsDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
