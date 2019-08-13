@@ -1,4 +1,6 @@
 import com.jcraft.jsch.*;
+
+import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
 import java.nio.charset.Charset;
@@ -191,6 +193,8 @@ public class Client {
             e.printStackTrace();
         }
      }
+
+
 
     /**
      * Will delete a directory on the remote SFTP server - nonRecursive

@@ -1,4 +1,5 @@
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import org.junit.Test;
@@ -145,7 +146,7 @@ public class ClientTest {
      * string for filetoDelete must be updated with each test
      */
     @Test
-    public void deleteRemoteFiles() {
+    public void testDeleteRemoteFiles() {
         System.setOut(new PrintStream(outContent));
         client.connect();
         if(!client.channelSftp.isConnected()){
