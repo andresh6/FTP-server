@@ -8,6 +8,7 @@ public class User {
     String username;
     String password;
     String hostname;
+    int port;
 
     User(){
         /** Base instantiation of User object.
@@ -16,6 +17,7 @@ public class User {
         username = null;
         password = null;
         hostname = null;
+        port = 0;
     }
 
     /**
@@ -29,11 +31,15 @@ public class User {
      *
      * @param hostname
      *        The server to which the user will connect
+     *
+     * @param port
+     *        The SFTP server port
      */
-    User(String username, String password, String hostname) {
+    User(String username, String password, String hostname, String port) {
         this.username = username;
         this.password = password;
         this.hostname = hostname;
+        this.port = Integer.parseInt(port);
     }
 
 }
