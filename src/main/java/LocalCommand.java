@@ -1,4 +1,5 @@
 import java.io.File;
+import org.pmw.tinylog.Logger;
 
 
 public class LocalCommand extends AbstractCommand {
@@ -27,7 +28,7 @@ public class LocalCommand extends AbstractCommand {
         boolean isDirectory = file.isDirectory(); // Check if it's a directory
         boolean isFile =      file.isFile();      // Check if it's a regular file
         if (isFile) {
-            System.out.println("bash: cd: temp.txt: Not a directory");
+            Logger.info("bash: cd: temp.txt: Not a directory");
         } else if (isDirectory) {
             // if the System.getProperty("user.dir") is a substring of the path provided, it's an absolute path
             // we know it's a directory so just set the value to path
@@ -44,9 +45,9 @@ public class LocalCommand extends AbstractCommand {
                 }
             }
         } else if(!exists) {
-            System.out.println("bash: cd: foo: No such file or directory");
+            Logger.error("bash: cd: foo: No such file or directory");
         } else {
-            System.err.println("There has been an error processing your path.");
+            Logger.error("There has been an error processing your path.");
             System.exit(1);
         }
     }
@@ -59,10 +60,10 @@ public class LocalCommand extends AbstractCommand {
             try {
                 File dir = new File(this.currentDirectory + "/");
                 for (String file : dir.list()) {
-                    System.out.println(file);
+                    Logger.info(file);
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                Logger.error(e.getMessage());
             }
     }
 
@@ -79,9 +80,9 @@ public class LocalCommand extends AbstractCommand {
         File dir = new File(this.currentDirectory + "/"+name);
         try {
             if (dir.mkdirs()) {
-                System.out.println("Directory was created successfully");
+                Logger.info("Directory was created successfully");
             } else {
-                System.out.println("Failed trying to create the directory");
+                Logger.warn("Failed trying to create the directory");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -94,7 +95,7 @@ public class LocalCommand extends AbstractCommand {
      */
     @Override
     public String pwd() {
-        System.out.println(this.currentDirectory);
+        Logger.info(this.currentDirectory);
         return this.currentDirectory;
     }
 
@@ -114,7 +115,7 @@ public class LocalCommand extends AbstractCommand {
     @Override
     public void mv(String oldName, String newName) {
         if(oldName == null || newName == null) {
-            System.out.println("Name is invalid");
+            Logger.error("Name is invalid");
             return;
         }
 
@@ -122,9 +123,9 @@ public class LocalCommand extends AbstractCommand {
         File nfile = new File(this.currentDirectory+"/"+newName);
 
         if(ofile.renameTo(nfile)){
-            System.out.println("Successfully rename the file.");;
+            Logger.info("Successfully rename the file.");;
         }else{
-            System.out.println("Failed to rename the file");
+            Logger.info("Failed to rename the file");
         }
 
     }
