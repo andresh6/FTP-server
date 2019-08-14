@@ -331,7 +331,7 @@ public class UserInterface {
                     break;
                 case "lcd":
                     returnString = lcdHelp;
-                    break
+                    break;
                 case "pwd":
                     returnString = pwdHelp;
                     break;
