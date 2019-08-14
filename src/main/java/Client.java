@@ -48,10 +48,12 @@ public class Client {
      *        The <code>password</code> to be used in the <code>User</code> object
      * @param hostname
      *        The <code>hostname</code> to be used in the <code>User</code> object
+     * @param port
+     *        The <code>port</code> to be used in the <code>User</code> object
      */
-    Client(String username, String password, String hostname) {
+    Client(String username, String password, String hostname, String port) {
         this.jsch = new JSch();
-        this.user = new User(username, password, hostname);
+        this.user = new User(username, password, hostname, port);
     }
 
 
@@ -80,7 +82,7 @@ public class Client {
 
         } catch (Exception e) {
             System.err.println("You did something wrong.");
-            System.err.println(e);
+            System.err.println(e.toString());
             System.exit(1);
         }
     }
@@ -105,6 +107,7 @@ public class Client {
         }
         catch (SftpException e){
             System.err.println("Something went wrong while getting your file.");
+            System.err.println(e.toString());
         }
     }
  
@@ -119,7 +122,7 @@ public class Client {
         }
         catch (SftpException e){
             System.err.println("Something went wrong while uploading your file.");
-            System.err.println(e);
+            System.err.println(e.toString());
         }
     }
 
@@ -149,7 +152,7 @@ public class Client {
                 }
             }
         } catch (SftpException e) {
-            System.err.println(e);
+            System.err.println(e.toString());
         }
     }
 
@@ -208,8 +211,7 @@ public class Client {
                 channelSftp.rmdir(path);
             }
         } catch (SftpException e) {
-            System.err.println(e);
-            e.printStackTrace();
+            System.err.println(e.toString());
         }
      }
 
@@ -248,8 +250,7 @@ public class Client {
                 channelSftp.rmdir(path);
             }
         } catch (SftpException e) {
-            System.err.println(e);
-            e.printStackTrace();
+            System.err.println(e.toString());
         }
     }
 
@@ -276,7 +277,7 @@ public class Client {
             try {
                 channelSftp.chmod(foo, path);
             } catch (SftpException e) {
-                e.printStackTrace();
+                System.err.println(e.toString());
             }
         } else {
             System.err.println("Invalid permissions setting: " + permissions);
@@ -328,7 +329,7 @@ public class Client {
             channelSftp.rename(old_name, new_name);
         } catch (SftpException e){
             System.err.println("Something went wrong while renaming your file.");
-            System.err.println(e);
+            System.err.println(e.toString());
         }
     }
 
@@ -343,7 +344,7 @@ public class Client {
             channelSftp.cd(path + "/" + dirName);
         } catch(SftpException e){
             System.err.println("Something went wrong.");
-            System.err.println(e);
+            System.err.println(e.toString());
         }
     }
 
@@ -357,7 +358,7 @@ public class Client {
            System.out.println(channelSftp.pwd());
         } catch(SftpException e){
             System.err.println("Something went wrong.");
-            System.err.println(e);
+            System.err.println(e.toString());
         }
 
     }
