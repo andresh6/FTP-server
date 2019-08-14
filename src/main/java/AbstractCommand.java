@@ -17,7 +17,7 @@ public abstract class AbstractCommand {
     }
 
     abstract void cd(String path);
-    abstract void ls(String path);
+    abstract void ls();
     abstract void mkdir(String name);
     abstract String pwd();
     abstract void mv(String oldName, String newName);

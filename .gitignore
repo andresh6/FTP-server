@@ -3,6 +3,8 @@
 
 # Log file
 *.log
+# Intellij module file
+*.iml
 
 # BlueJ files
 *.ctxt

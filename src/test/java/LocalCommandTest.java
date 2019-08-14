@@ -1,5 +1,4 @@
 //import jdk.vm.ci.meta.Local;
-/*
 import org.junit.Test;
 
 import java.io.File;
@@ -17,7 +16,7 @@ public class LocalCommandTest {
         // File new create directory if one doesn't already exit
         // add temp folder to show that paths work
         // list everything at the project's root level
-        localCommand.ls(System.getProperty("user.dir") + "/testing");
+        localCommand.ls();
         // clean up temp dirs made
     }
 
@@ -80,4 +79,3 @@ public class LocalCommandTest {
         return pathToFile;
     }
 }
-*/

@@ -55,17 +55,15 @@ public class LocalCommand extends AbstractCommand {
      * Lists all of the files and directories at the level specified by the path parameter
      */
     @Override
-    public void ls(String path) {
-        if(path != null) {
+    public void ls() {
             try {
-                File dir = new File(this.currentDirectory + "/" + path);
+                File dir = new File(this.currentDirectory + "/");
                 for (String file : dir.list()) {
                     System.out.println(file);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }
     }
 
 
