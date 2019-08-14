@@ -15,7 +15,7 @@ public class ClientTest {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
 
-    private User user = new User("agileteam6", "agileteam6", "34.83.11.14");
+    private User user = new User("agileteam6", "agileteam6", "34.83.11.14", "22");
     private Client client = new Client(user);
 
     /**
