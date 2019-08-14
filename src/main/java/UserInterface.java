@@ -59,6 +59,9 @@ public class UserInterface {
             else if(input.startsWith("cd ")){
                 changeDir(client, input);
             }
+            else if(input.startsWith("lcd")){
+                changeLocalDir(lc, input);
+            }
             else if(input.startsWith("pwd")){
                 client.pwd();
             }
@@ -215,6 +218,7 @@ public class UserInterface {
                 "ls - list files on remote server\n" +
                 "lls - list files on local machine\n" +
                 "cd - change directory on remote server\n" +
+                "lcd - change directory on local machine \n" +
                 "pwd - print working directory of remote server\n" +
                 "lpwd - print working directory of local machine\n" +
                 "mv - move or rename a file or directory on the remote server\n" +
@@ -258,6 +262,10 @@ public class UserInterface {
                 "ex. > lls";
 
         final String cdHelp = "cd - change directory on remote server\n" +
+                "cd <path>\n" +
+                "ex. > cd Directory/";
+
+        final String lcdHelp = "lcd - change directory on local machine\n" +
                 "cd <path>\n" +
                 "ex. > cd Directory/";
 
@@ -332,6 +340,9 @@ public class UserInterface {
                 case "cd":
                     returnString = cdHelp;
                     break;
+                case "lcd":
+                    returnString = lcdHelp;
+                    break;
                 case "pwd":
                     returnString = pwdHelp;
                     break;
@@ -369,6 +380,10 @@ public class UserInterface {
     public void changeDir(Client client,String input){
         String dirName = input.substring(3);
         client.changeDir(dirName);
+    }
+    public void changeLocalDir(LocalCommand lc, String input){
+        String dirName = input.substring(3);
+        lc.cd(dirName);
     }
 
     public void listRemoteFiles(Client client){
@@ -433,9 +448,9 @@ public class UserInterface {
             System.err.println(help("help mv"));
         }
     }
+
     public void listLocalFiles(LocalCommand lc){
         lc.ls();
     }
 }
-
 
