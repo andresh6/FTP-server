@@ -16,6 +16,7 @@ public class UserInterface {
      * @param client takes in a client object that is created in main when a user connects
      */
     public void listenForInput(Client client, LocalCommand lc){
+        System.out.println("Welcome to the SFTP CLI. Enter \"help\" to seeavailable commands.");
 
         boolean loop_flag = true;
         while (loop_flag) {
@@ -94,10 +95,13 @@ public class UserInterface {
     private void put_file(Client client, String input) {
         String file_paths = input.substring(4);
         int index_of_space = file_paths.indexOf(" ");
-        String src = file_paths.substring(0, index_of_space);
-        String dst = file_paths.substring(index_of_space + 1);
-
-        client.putFile(src, dst);
+        try {
+            String src = file_paths.substring(0, index_of_space);
+            String dst = file_paths.substring(index_of_space + 1);
+            client.putFile(src, dst);
+        } catch (Exception e) {
+            System.err.println(help("help put"));
+        }
     }
 
 
@@ -108,10 +112,13 @@ public class UserInterface {
     private void get_file(Client client, String input) {
         String file_paths = input.substring(4);
         int index_of_space = file_paths.indexOf(" ");
-        String src = file_paths.substring(0, index_of_space);
-        String dst = file_paths.substring(index_of_space + 1);
-
-        client.getFile(src, dst);
+        try {
+            String src = file_paths.substring(0, index_of_space);
+            String dst = file_paths.substring(index_of_space + 1);
+            client.getFile(src, dst);
+        } catch (Exception e) {
+            System.err.println(help("help get"));
+        }
     }
 
 
@@ -122,70 +129,74 @@ public class UserInterface {
      *               -file paths should not end in "/"
      */
     public void get_multiple(Client client, String input) {
-        String pathAndFiles = input.substring(5);           //creates substring of paths and files
-        int index_of_space = pathAndFiles.indexOf(" ");
-        String src = pathAndFiles.substring(0, index_of_space); //makes new string of first path
+        try {
+            String pathAndFiles = input.substring(5);           //creates substring of paths and files
+            int index_of_space = pathAndFiles.indexOf(" ");
+            String src = pathAndFiles.substring(0, index_of_space); //makes new string of first path
 
-        pathAndFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
-        index_of_space = pathAndFiles.indexOf(" ");
-        String dst = pathAndFiles.substring(0, index_of_space);
+            pathAndFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
+            index_of_space = pathAndFiles.indexOf(" ");
+            String dst = pathAndFiles.substring(0, index_of_space);
 
-        String mFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length()); //creates new string of file names
-        index_of_space = mFiles.indexOf(" ");
-
-        while (index_of_space != -1) {   //  loops and "gets" files
-
-            String file_name = mFiles.substring(0, index_of_space);
-            String temp = src + "/" + file_name;
-            client.getFile(temp, dst);
-
-            mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
+            String mFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length()); //creates new string of file names
             index_of_space = mFiles.indexOf(" ");
 
-            if (index_of_space == -1) {   //handles last file in string
-                file_name = mFiles.substring(0, mFiles.length());
-                temp = src + "/" + file_name;
+            while (index_of_space != -1) {   //  loops and "gets" files
+
+                String file_name = mFiles.substring(0, index_of_space);
+                String temp = src + "/" + file_name;
                 client.getFile(temp, dst);
+
+                mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
+                index_of_space = mFiles.indexOf(" ");
+
+                if (index_of_space == -1) {   //handles last file in string
+                    file_name = mFiles.substring(0, mFiles.length());
+                    temp = src + "/" + file_name;
+                    client.getFile(temp, dst);
+                }
             }
+        } catch (Exception e) {
+            System.err.println(help("help mget"));
         }
     }
 
 
     /**
-<<<<<<< HEAD
-=======
-
->>>>>>> master
      * follows the same logic as the get_multiple function above
      * example: mput sourcePath destinationPath file1 file2 file3...
      * -paths should not contain '/' at the very end
      */
     public void put_multiple(Client client, String input) {
-        String pathAndFiles = input.substring(5);
-        int index_of_space = pathAndFiles.indexOf(" ");
-        String src = pathAndFiles.substring(0, index_of_space);
+        try {
+            String pathAndFiles = input.substring(5);
+            int index_of_space = pathAndFiles.indexOf(" ");
+            String src = pathAndFiles.substring(0, index_of_space);
 
-        pathAndFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
-        index_of_space = pathAndFiles.indexOf(" ");
-        String dst = pathAndFiles.substring(0, index_of_space);
+            pathAndFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
+            index_of_space = pathAndFiles.indexOf(" ");
+            String dst = pathAndFiles.substring(0, index_of_space);
 
-        String mFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
-        index_of_space = mFiles.indexOf(" ");
-
-        while (index_of_space != -1) {
-
-            String file_name = mFiles.substring(0, index_of_space);
-            String temp = src + "/" + file_name;
-            client.putFile(temp, dst);
-
-            mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
+            String mFiles = pathAndFiles.substring(index_of_space + 1, pathAndFiles.length());
             index_of_space = mFiles.indexOf(" ");
 
-            if (index_of_space == -1) {
-                file_name = mFiles.substring(0, mFiles.length());
-                temp = src + "/" + file_name;
+            while (index_of_space != -1) {
+
+                String file_name = mFiles.substring(0, index_of_space);
+                String temp = src + "/" + file_name;
                 client.putFile(temp, dst);
+
+                mFiles = mFiles.substring(index_of_space + 1, mFiles.length());
+                index_of_space = mFiles.indexOf(" ");
+
+                if (index_of_space == -1) {
+                    file_name = mFiles.substring(0, mFiles.length());
+                    temp = src + "/" + file_name;
+                    client.putFile(temp, dst);
+                }
             }
+        } catch (Exception e) {
+            System.err.println(help("help mput"));
         }
     }
 
@@ -387,19 +398,25 @@ public class UserInterface {
     public void changePermissions(Client client, String input){
         String pathPermissions= input.substring(6);
         int index_of_space = pathPermissions.indexOf(" ");
-        String path = pathPermissions.substring(0,index_of_space);
-        String permissions = pathPermissions.substring(index_of_space + 1);
+        try {
+            String path = pathPermissions.substring(0, index_of_space);
+            String permissions = pathPermissions.substring(index_of_space + 1);
 
-        client.changePermissions(path, permissions);
-
+            client.changePermissions(path, permissions);
+        } catch (Exception e) {
+            System.err.println(help("help chmod"));
+        }
     }
     public void rename_file(Client client, String input) {
         String file_paths = input.substring(3);
         int index_of_space = file_paths.indexOf(" ");
-        String old_name = file_paths.substring(0, index_of_space);
-        String new_name = file_paths.substring(index_of_space + 1);
-
-        client.rename_file(old_name, new_name);
+        try {
+            String old_name = file_paths.substring(0, index_of_space);
+            String new_name = file_paths.substring(index_of_space + 1);
+            client.rename_file(old_name, new_name);
+        } catch (Exception e) {
+            System.err.println(help("help mv"));
+        }
 
     }
     public void printLocalWorkingDir(LocalCommand lc){
@@ -408,10 +425,13 @@ public class UserInterface {
     public void renameLocalFile(LocalCommand lc, String input){
         String file_paths = input.substring(4);
         int index_of_space = file_paths.indexOf(" ");
-        String old_name = file_paths.substring(0, index_of_space);
-        String new_name = file_paths.substring(index_of_space + 1);
-
-        lc.mv(old_name, new_name);
+        try {
+            String old_name = file_paths.substring(0, index_of_space);
+            String new_name = file_paths.substring(index_of_space + 1);
+            lc.mv(old_name, new_name);
+        } catch (Exception e) {
+            System.err.println(help("help mv"));
+        }
     }
     public void listLocalFiles(LocalCommand lc){
         lc.ls();
